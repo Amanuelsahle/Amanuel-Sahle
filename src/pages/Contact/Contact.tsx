@@ -41,7 +41,7 @@ const Contact = () => {
         "service_pg28bht",
         "template_dkzb9lv",
         values,
-        "ezWMKbtLcTiZTtrFA",
+        import.meta.env.VITE_MAILJS_PUBLIC_KEY,
       );
 
       openNotificationWithIcon(
