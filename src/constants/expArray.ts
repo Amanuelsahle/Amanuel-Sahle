@@ -12,7 +12,7 @@ const expArray = [
   },
   {
     company: "Black Bridge Technologies",
-    date: "02/2025 - 09/2026",
+    date: "02/2025 - 04/2026",
     description: " Worked on e-commerce web application with React and Node js",
   },
 
