@@ -4,7 +4,7 @@ import { SiGithub } from "react-icons/si";
 import { ScaleLoader } from "react-spinners";
 import { AiOutlineEye } from "react-icons/ai";
 import { IoMdRefresh } from "react-icons/io";
-import { Space, Typography } from "antd";
+import { Select, Space, Typography } from "antd";
 import { useAnimation, motion } from "framer-motion";
 
 import useProjects from "../../hooks/useProjects";
@@ -13,10 +13,23 @@ import styles from "./Projects.module.css";
 
 const { Text, Title } = Typography;
 
+const buttons = ["All", "React Js", "Next Js"];
+
 const Projects = () => {
   const controls = useAnimation();
-  const [selected] = useState("All");
+  const [selected, setSelected] = useState("All");
   const { isLoading, projects, getProjects } = useProjects();
+
+  const handleFilter = async (filter: string) => {
+    // Trigger fade-out animation
+    await controls.start({ y: 50, opacity: 0, transition: { duration: 0.5 } });
+
+    // Set the selected filter for the next animation
+    setSelected(filter);
+
+    // Trigger fade-in animation for the selected component
+    controls.start({ y: 0, opacity: 1, transition: { duration: 0.5 } });
+  };
 
   let filteredProjects = projects;
   if (selected !== "All") {
@@ -43,7 +56,35 @@ const Projects = () => {
         Projects
       </Title>
       <Title className={styles.subtitle}>My Creative Project Section</Title>
-
+      <div className={styles.filterButtons}>
+        {buttons.map((button, index) => {
+          return (
+            <button
+              key={index}
+              onClick={() => handleFilter(button)}
+              className={
+                selected === button
+                  ? `${styles.filterButton} ${styles.activeButton}`
+                  : styles.filterButton
+              }
+            >
+              {button}
+            </button>
+          );
+        })}
+      </div>
+      <div className={styles.selectContainer}>
+        <Select
+          defaultValue="All"
+          className={styles.select}
+          onChange={(value: string) => handleFilter(value)}
+          options={[
+            { value: "All", label: "All" },
+            { value: "React Js", label: "React Js" },
+            { value: "Next Js", label: "Next Js" },
+          ]}
+        />
+      </div>
       {isLoading ? (
         Loader
       ) : projects.length === 0 ? (
